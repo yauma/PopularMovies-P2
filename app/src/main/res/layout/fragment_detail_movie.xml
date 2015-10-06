@@ -1,0 +1,120 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jaimequeralt.popularmovies.DetailMovieActivityFragment"
+    android:theme="@style/Platform.ThemeOverlay.AppCompat.Dark"
+    android:touchscreenBlocksFocus="true">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView"
+        android:background="@android:color/background_light">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/black">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Title"
+                    android:id="@+id/textViewTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/textview_layout_margin"
+                    android:textColor="@android:color/white" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="100"
+                android:layout_marginTop="@dimen/linearlayout_margin_top">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageViewPoster"
+                        android:src="@drawable/sample_0"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:gravity="center_horizontal"
+                    android:weightSum="90">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="30">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="@string/release_date"
+                            android:id="@+id/textView"
+                            android:layout_marginRight="10dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textViewDate"
+                            android:layout_marginLeft="@dimen/textview_layout_marginLeft"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                    </LinearLayout>
+
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ratingBar"
+                        android:isIndicator="true"
+                        android:numStars="0"
+                        android:stepSize="0.01"
+                        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
+                        android:layout_gravity="left"
+                        android:layout_weight="30" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="7/10"
+                        android:id="@+id/textViewRating"
+                        android:layout_gravity="center_horizontal|left"
+                        android:layout_weight="30" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Overview:"
+                android:id="@+id/textViewOverview"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/textview_layout_margin"
+                android:textSize="@dimen/textsize" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
