@@ -5,14 +5,25 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private Bundle params;
+
+    public Bundle getParams() {
+        return params;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        params = getIntent().getExtras();
 
     }
 
@@ -35,5 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

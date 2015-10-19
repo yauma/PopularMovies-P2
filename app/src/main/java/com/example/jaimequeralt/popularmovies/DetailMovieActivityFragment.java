@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.jaimequeralt.popularmovies.databasePackage.DbMovies;
 import com.squareup.picasso.Picasso;
 
 
@@ -22,8 +24,9 @@ public class DetailMovieActivityFragment extends Fragment {
 
     private Movie movie;
     private TextView textViewTitle, textViewDate, textViewOverview, textViewRating;
-    private ImageView imageViewPoster;
+    private ImageView imageViewPoster,imageViewFavorite;
     private RatingBar ratingBar;
+
 
     public DetailMovieActivityFragment() {
     }
@@ -34,6 +37,7 @@ public class DetailMovieActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Object ObjectMovie = getActivity().getIntent().getExtras().getParcelable("Movie");
         movie = (Movie) ObjectMovie;
+
 
     }
 
@@ -48,14 +52,14 @@ public class DetailMovieActivityFragment extends Fragment {
         textViewRating = (TextView) rootview.findViewById(R.id.textViewRating);
 
         imageViewPoster = (ImageView) rootview.findViewById(R.id.imageViewPoster);
+        imageViewFavorite = (ImageView) rootview.findViewById(R.id.imageViewFavorite);
         ratingBar = (RatingBar) rootview.findViewById(R.id.ratingBar);
-
 
         textViewTitle.setText(movie.getTitle());
         textViewDate.setText(movie.getReleaseDate());
         textViewOverview.setText(movie.getOverview());
-        textViewRating.setText( String.valueOf(movie.getRating())+"/10");
-        ratingBar.setRating(movie.getRating()/(10/ratingBar.getNumStars()));
+        textViewRating.setText(String.valueOf(movie.getRating()) + "/10");
+        ratingBar.setRating(movie.getRating() / (10 / ratingBar.getNumStars()));
 
         String url = "http://image.tmdb.org/t/p/w342/" + movie.getPoster_path();
 
@@ -63,8 +67,15 @@ public class DetailMovieActivityFragment extends Fragment {
                 .load(url)
                 .into(imageViewPoster);
 
+        imageViewFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DbMovies.getInstance().insertMovie(getActivity(),movie);
+                Toast.makeText(getActivity(),"Save to Favorite",Toast.LENGTH_LONG).show();
+            }
+        });
+
         return rootview;
     }
-
 
 }

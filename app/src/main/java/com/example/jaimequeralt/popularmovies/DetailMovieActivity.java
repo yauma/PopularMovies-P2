@@ -1,17 +1,23 @@
 package com.example.jaimequeralt.popularmovies;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 
 public class DetailMovieActivity extends ActionBarActivity {
+
+    private String filterReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_movie);
+        filterReturn = getIntent().getStringExtra("Filter");
     }
 
 
@@ -29,9 +35,7 @@ public class DetailMovieActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-
-
         return super.onOptionsItemSelected(item);
     }
+
 }

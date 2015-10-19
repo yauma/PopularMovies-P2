@@ -2,8 +2,8 @@ package com.example.jaimequeralt.popularmovies;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -39,7 +39,7 @@ public class MainActivityFragment extends Fragment {
     private ImageAdapter imageAdapter;
     private ArrayList<String> mListImages;
     private final String API_KEY = "9bc3a7bc8d59c59f5ce6afa05f9a3d60";
-    private String filter = "popular";
+    private String filter;
     private JsonObjectRequest jsObjRequest;
     private ActionBar mActionBar;
     private Movie movie;
@@ -54,15 +54,24 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null){
+
+        fetchDataSharedPreferences();
+
+        if (savedInstanceState != null) {
             mListImages = (ArrayList<String>) savedInstanceState.get("listImages");
             listMovies = (ArrayList<Movie>) savedInstanceState.get("listMovies");
             itemPosition = savedInstanceState.getInt("itemPosition");
         }
         setHasOptionsMenu(true);
         mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        mActionBar.setTitle("Most Popular Movies");
+        if (filter.equals("popular")) {
+            mActionBar.setTitle("Most Popular Movies");
+        } else {
+            mActionBar.setTitle("Top Rated Movies");
+        }
+
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -107,12 +116,11 @@ public class MainActivityFragment extends Fragment {
 
         gridview = (GridView) rootView.findViewById(R.id.gridview);
 
-        if(mListImages != null){
+        if (mListImages != null) {
             imageAdapter = new ImageAdapter(getActivity(), mListImages);
             gridview.setAdapter(imageAdapter);
             gridview.setSelection(itemPosition);
-        }
-        else {
+        } else {
             url = buildUrl(filter);
             loadGridViewFromAPI(url);
         }
@@ -122,6 +130,7 @@ public class MainActivityFragment extends Fragment {
                                     int position, long id) {
                 Intent intent = new Intent(getActivity(), DetailMovieActivity.class);
                 intent.putExtra("Movie", listMovies.get(position));
+                intent.putExtra("Filter", filter);
                 startActivity(intent);
             }
         });
@@ -141,6 +150,7 @@ public class MainActivityFragment extends Fragment {
                         mListImages = parseJsonObject(response);
                         imageAdapter = new ImageAdapter(getActivity(), mListImages);
                         gridview.setAdapter(imageAdapter);
+                        gridview.setSelection(itemPosition);
                     }
                 }, new Response.ErrorListener() {
 
@@ -190,13 +200,15 @@ public class MainActivityFragment extends Fragment {
         }
         return mListImages;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putStringArrayList("listImages", mListImages);
-        outState.putParcelableArrayList("listMovies",listMovies);
-        itemPosition = gridview.getFirstVisiblePosition() ;
-        outState.putInt("itemPosition",itemPosition);
+        outState.putParcelableArrayList("listMovies", listMovies);
+        outState.putString("filter", filter);
+        itemPosition = gridview.getFirstVisiblePosition();
+        outState.putInt("itemPosition", itemPosition);
     }
 
     @Override
@@ -205,5 +217,26 @@ public class MainActivityFragment extends Fragment {
         if (jsObjRequest != null) {
             jsObjRequest.cancel();
         }
+        //Saving filter to SharedPreferneces
+        SaveDataSharedPreferences();
     }
+
+    private void SaveDataSharedPreferences() {
+        SharedPreferences data = getActivity().getSharedPreferences("items", getActivity().MODE_PRIVATE);
+        SharedPreferences.Editor editor = data.edit();
+        editor.clear();
+        editor.putString("filter", filter);
+        editor.putInt("itemPosition", gridview.getFirstVisiblePosition());
+        editor.commit();
+    }
+
+    private void fetchDataSharedPreferences() {
+        SharedPreferences data = getActivity().getSharedPreferences("items", getActivity().MODE_PRIVATE);
+        filter = data.getString("filter", new String());
+        itemPosition = data.getInt("itemPosition", 0);
+        if (filter.isEmpty()) {
+            filter = "popular";
+        }
+    }
+
 }

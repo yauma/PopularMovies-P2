@@ -1,20 +1,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jaimequeralt.popularmovies.DetailMovieActivityFragment"
     android:theme="@style/Platform.ThemeOverlay.AppCompat.Dark"
-    android:touchscreenBlocksFocus="true">
+    android:touchscreenBlocksFocus="true"
+    tools:context="com.example.jaimequeralt.popularmovies.DetailMovieActivityFragment">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/scrollView"
         android:background="@android:color/background_light">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -22,22 +23,22 @@
                 android:background="@android:color/black">
 
                 <TextView
+                    android:id="@+id/textViewTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Title"
-                    android:id="@+id/textViewTitle"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="@dimen/textview_layout_margin"
+                    android:text="Title"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@android:color/white" />
             </FrameLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:weightSum="100"
-                android:layout_marginTop="@dimen/linearlayout_margin_top">
+                android:layout_marginTop="@dimen/linearlayout_margin_top"
+                android:orientation="horizontal"
+                android:weightSum="100">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -45,74 +46,81 @@
                     android:layout_weight="50">
 
                     <ImageView
+                        android:id="@+id/imageViewPoster"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageViewPoster"
-                        android:src="@drawable/sample_0"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:src="@drawable/sample_0" />
                 </FrameLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
                     android:gravity="center_horizontal"
+                    android:orientation="vertical"
                     android:weightSum="90">
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="30">
+                        android:layout_weight="30"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="@string/release_date"
                             android:id="@+id/textView"
-                            android:layout_marginRight="10dp" />
-
-                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/textViewDate"
-                            android:layout_marginLeft="@dimen/textview_layout_marginLeft"
-                            android:textStyle="bold"
+                            android:layout_marginRight="10dp"
+                            android:text="@string/release_date"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:id="@+id/textViewDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/textview_layout_marginLeft"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/ratingBar"
+                        android:layout_gravity="left"
+                        android:layout_weight="30"
                         android:isIndicator="true"
                         android:numStars="0"
-                        android:stepSize="0.01"
-                        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
-                        android:layout_gravity="left"
-                        android:layout_weight="30" />
+                        android:stepSize="0.01" />
 
                     <TextView
+                        android:id="@+id/textViewRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="30"
                         android:text="7/10"
-                        android:id="@+id/textViewRating"
-                        android:layout_gravity="center_horizontal|left"
-                        android:layout_weight="30" />
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <ImageView
+                        android:id="@+id/imageViewFavorite"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center|left"
+                        android:src="@drawable/ic_action_emo_wink" />
 
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
+                android:id="@+id/textViewOverview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Overview:"
-                android:id="@+id/textViewOverview"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/textview_layout_margin"
+                android:text="Overview:"
                 android:textSize="@dimen/textsize" />
         </LinearLayout>
     </ScrollView>
