@@ -1,4 +1,4 @@
-package com.example.jaimequeralt.popularmovies;
+package com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage;
 
 
 import android.content.Intent;
@@ -21,6 +21,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.jaimequeralt.popularmovies.adaptersPackage.ImageAdapter;
+import com.example.jaimequeralt.popularmovies.modelPackage.Movie;
+import com.example.jaimequeralt.popularmovies.modelPackage.MySingleton;
+import com.example.jaimequeralt.popularmovies.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +49,7 @@ public class MainActivityFragment extends Fragment {
     private Movie movie;
     private ArrayList<Movie> listMovies;
     private String url;
-    private int itemPosition = 0;
+    private int  itemPosition = 0;
 
 
     public MainActivityFragment() {
@@ -104,6 +108,11 @@ public class MainActivityFragment extends Fragment {
             }
         }
 
+        if (id == R.id.favorites) {
+            Intent intent = new Intent(getActivity(),MyFavoritesActivity.class);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -130,7 +139,7 @@ public class MainActivityFragment extends Fragment {
                                     int position, long id) {
                 Intent intent = new Intent(getActivity(), DetailMovieActivity.class);
                 intent.putExtra("Movie", listMovies.get(position));
-                intent.putExtra("Filter", filter);
+                intent.putExtra("activity", "main");
                 startActivity(intent);
             }
         });

@@ -1,10 +1,7 @@
-package com.example.jaimequeralt.popularmovies;
+package com.example.jaimequeralt.popularmovies.modelPackage;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by jaimequeralt on 9/15/15.

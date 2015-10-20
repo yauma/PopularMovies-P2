@@ -1,4 +1,4 @@
-package com.example.jaimequeralt.popularmovies;
+package com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.jaimequeralt.popularmovies.R;
 
 
 public class MainActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.example.jaimequeralt.popularmovies;
+package com.example.jaimequeralt.popularmovies.modelPackage;
 
 import android.content.Context;
 

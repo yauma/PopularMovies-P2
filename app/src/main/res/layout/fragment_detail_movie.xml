@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:theme="@style/Platform.ThemeOverlay.AppCompat.Dark"
     android:touchscreenBlocksFocus="true"
-    tools:context="com.example.jaimequeralt.popularmovies.DetailMovieActivityFragment">
+    tools:context="com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage.DetailMovieActivityFragment">
 
     <ScrollView
         android:id="@+id/scrollView"

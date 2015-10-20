@@ -2,10 +2,9 @@ package com.example.jaimequeralt.popularmovies.databasePackage;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.jaimequeralt.popularmovies.Movie;
+import com.example.jaimequeralt.popularmovies.modelPackage.Movie;
 
 import java.util.ArrayList;
 

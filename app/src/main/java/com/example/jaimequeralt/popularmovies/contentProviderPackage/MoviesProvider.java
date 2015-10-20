@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.example.jaimequeralt.popularmovies.Movie;
 import com.example.jaimequeralt.popularmovies.databasePackage.DbHelper;
 
 /**
@@ -17,7 +16,7 @@ import com.example.jaimequeralt.popularmovies.databasePackage.DbHelper;
  */
 public class MoviesProvider extends ContentProvider {
     private static final String URI = "content://com.jaimequeralt.popularmovies.contentproviders/movies";
-    private static final Uri CONTENT_URI = Uri.parse(URI);
+    public static final Uri CONTENT_URI = Uri.parse(URI);
     //Data Base
     private DbHelper dbHelper;
     private static final String DB_NAME = "MPM";
@@ -110,11 +109,11 @@ public class MoviesProvider extends ContentProvider {
     public static final class Movies implements BaseColumns {
 
         //Column names
-        private static final String COL_TITLE = "title";
-        private static final String COL_POSTER = "poster_path";
-        private static final String COL_OVERVIEW = "overview";
-        private static final String COL_RELEASE = "releaseDate";
-        private static final String COL_RATING = "rating";
+        public static final String COL_TITLE = "title";
+        public static final String COL_POSTER = "poster_path";
+        public static final String COL_OVERVIEW = "overview";
+        public static final String COL_RELEASE = "releaseDate";
+        public static final String COL_RATING = "rating";
 
         private Movies() {
         }

@@ -1,4 +1,4 @@
-package com.example.jaimequeralt.popularmovies;
+package com.example.jaimequeralt.popularmovies.adaptersPackage;
 
 import android.content.Context;
 import android.util.AttributeSet;
