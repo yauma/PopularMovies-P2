@@ -26,6 +26,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("CREATE TABLE movies (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "movie_id INTEGER UNIQUE," +
                 "title TEXT UNIQUE, " +
                 "poster_path TEXT UNIQUE, " +
                 "overview TEXT UNIQUE" +

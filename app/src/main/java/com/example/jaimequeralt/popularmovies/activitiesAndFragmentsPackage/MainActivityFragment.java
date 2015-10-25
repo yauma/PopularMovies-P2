@@ -125,6 +125,7 @@ public class MainActivityFragment extends Fragment {
 
         gridview = (GridView) rootView.findViewById(R.id.gridview);
 
+
         if (mListImages != null) {
             imageAdapter = new ImageAdapter(getActivity(), mListImages);
             gridview.setAdapter(imageAdapter);
@@ -193,12 +194,13 @@ public class MainActivityFragment extends Fragment {
             JSONArray results = response.getJSONArray("results");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject posterObj = results.getJSONObject(i);
+                int id = posterObj.getInt("id");
                 String originalTitle = posterObj.getString("original_title");
                 String posterPath = posterObj.getString("poster_path");
                 String overview = posterObj.getString("overview");
                 String releaseDate = posterObj.getString("release_date");
                 float average = Float.parseFloat(posterObj.getString("vote_average"));
-                movie = new Movie(originalTitle, posterPath, overview, releaseDate, average);
+                movie = new Movie(id,originalTitle, posterPath, overview, releaseDate, average);
                 listMovies.add(movie);
                 mListImages.add(posterPath);
 

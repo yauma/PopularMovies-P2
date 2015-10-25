@@ -11,6 +11,17 @@ public class Movie implements Parcelable {
     private String title, poster_path, overview, releaseDate;
     private float rating;
 
+    public Movie(int id,String title, String poster_path, String overview, String releaseDate, float rating) {
+        this.title = title;
+        this.poster_path = poster_path;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+        this.rating = rating;
+        this.id = id;
+    }
+
+    private int id;
+
     public Movie() {
 
     }
@@ -99,4 +110,12 @@ public class Movie implements Parcelable {
                     return new Movie[size];
                 }
             };
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

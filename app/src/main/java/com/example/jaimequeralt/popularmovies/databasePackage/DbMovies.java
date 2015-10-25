@@ -34,6 +34,7 @@ public class DbMovies {
         db = dbHelper.getWritableDatabase();
         ContentValues newMovie = new ContentValues();
 
+        newMovie.put("movie_id", movie.getId());
         newMovie.put("title", movie.getTitle());
         newMovie.put("poster_path", movie.getPoster_path());
         newMovie.put("overview", movie.getOverview());
