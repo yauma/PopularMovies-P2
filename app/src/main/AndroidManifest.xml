@@ -21,9 +21,12 @@
         <activity
             android:name=".activitiesAndFragmentsPackage.DetailMovieActivity"
             android:label="@string/title_activity_detail_movie">
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value=".activitiesAndFragmentsPackage.MainActivity" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+                <category android:name="android.intent.category.BROWSABLE"></category>
+                <data android:host="www.youtube.com" android:scheme="http"></data>
+            </intent-filter>
         </activity>
 
         <provider

@@ -3,6 +3,8 @@ package com.example.jaimequeralt.popularmovies.modelPackage;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by jaimequeralt on 9/15/15.
  */
@@ -10,8 +12,11 @@ public class Movie implements Parcelable {
 
     private String title, poster_path, overview, releaseDate;
     private float rating;
+    private int id;
+    private ArrayList<VideoTrailer> videoTrailerList;
 
-    public Movie(int id,String title, String poster_path, String overview, String releaseDate, float rating) {
+
+    public Movie(int id, String title, String poster_path, String overview, String releaseDate, float rating) {
         this.title = title;
         this.poster_path = poster_path;
         this.overview = overview;
@@ -20,7 +25,6 @@ public class Movie implements Parcelable {
         this.id = id;
     }
 
-    private int id;
 
     public Movie() {
 
@@ -85,6 +89,8 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeInt(id);
         parcel.writeString(title);
         parcel.writeString(poster_path);
         parcel.writeString(overview);
@@ -93,6 +99,7 @@ public class Movie implements Parcelable {
     }
 
     private void readFromParcel(Parcel in) {
+        id = in.readInt();
         title = in.readString();
         poster_path = in.readString();
         overview = in.readString();
@@ -117,5 +124,13 @@ public class Movie implements Parcelable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public ArrayList<VideoTrailer> getVideoTrailerList() {
+        return videoTrailerList;
+    }
+
+    public void setVideoTrailerList(ArrayList<VideoTrailer> videoTrailerList) {
+        this.videoTrailerList = videoTrailerList;
     }
 }

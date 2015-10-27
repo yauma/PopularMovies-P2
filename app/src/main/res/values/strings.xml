@@ -8,4 +8,6 @@
     <string name="release_date">Release Date:</string>
     <string name="title_activity_my_favorites">MyFavoritesActivity</string>
     <string name="favorites">Favorites</string>
+    <string name="trailer1">Trailer 1</string>
+    <string name="trailer2">Trailer 2</string>
 </resources>

@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,23 +105,113 @@
 
                     <ImageView
                         android:id="@+id/imageViewFavorite"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center|left"
-                        android:src="@drawable/ic_action_emo_wink" />
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_action_emo_wink"
+                        android:layout_gravity="bottom" />
 
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textViewOverview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/textview_layout_margin"
-                android:text="Overview:"
-                android:textSize="@dimen/textsize" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:divider="@drawable/separator"
+                android:showDividers="end"
+                android:dividerPadding="12dp">
+
+                <TextView
+                    android:id="@+id/textViewOverview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:elegantTextHeight="false"
+                    android:ellipsize="marquee"
+                    android:enabled="true"
+                    android:singleLine="false"
+                    android:text="Overview:"
+                    android:textSize="@dimen/textsize"
+                    android:padding="12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:divider="@drawable/separator"
+                android:showDividers="end"
+                android:dividerPadding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trailers:"
+                    android:id="@+id/textView2"
+                    android:textStyle="bold|italic"
+                    android:textSize="32dp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2"
+                    android:padding="24dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="left"
+                    android:divider="@drawable/separator"
+                    android:showDividers="end"
+                    android:dividerPadding="12dp">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:id="@+id/imageViewPlayBack"
+                        android:src="@drawable/ic_action_playback_play"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/trailer1"
+                        android:id="@+id/textView3"
+                        android:layout_gravity="center"
+                        android:padding="12dp"
+                        android:textSize="24dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2"
+                    android:padding="24dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="left"
+                    android:divider="@drawable/separator"
+                    android:showDividers="end"
+                    android:dividerPadding="12dp">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:id="@+id/imageViewPlayBack2"
+                        android:src="@drawable/ic_action_playback_play"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/trailer2"
+                        android:id="@+id/textView4"
+                        android:layout_gravity="center"
+                        android:padding="12dp"
+                        android:textSize="24dp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
+
+
     </ScrollView>
 
 </RelativeLayout>
