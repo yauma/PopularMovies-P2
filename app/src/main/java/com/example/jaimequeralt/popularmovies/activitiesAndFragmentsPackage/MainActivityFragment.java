@@ -42,7 +42,7 @@ public class MainActivityFragment extends Fragment {
     private GridView gridview;
     private ImageAdapter imageAdapter;
     private ArrayList<String> mListImages;
-    private final String API_KEY = "9bc3a7bc8d59c59f5ce6afa05f9a3d60";
+    private final String API_KEY = "";
     private String filter;
     private JsonObjectRequest jsObjRequest;
     private ActionBar mActionBar;
