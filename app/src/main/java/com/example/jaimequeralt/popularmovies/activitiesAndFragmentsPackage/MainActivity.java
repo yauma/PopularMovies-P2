@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        params = getIntent().getExtras();
+        //params = getIntent().getExtras();
 
     }
 

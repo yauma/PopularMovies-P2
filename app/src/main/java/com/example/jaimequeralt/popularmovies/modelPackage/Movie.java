@@ -14,6 +14,7 @@ public class Movie implements Parcelable {
     private float rating;
     private int id;
     private ArrayList<VideoTrailer> videoTrailerList;
+    private ArrayList<Review> reviews;
 
 
     public Movie(int id, String title, String poster_path, String overview, String releaseDate, float rating) {
@@ -132,5 +133,13 @@ public class Movie implements Parcelable {
 
     public void setVideoTrailerList(ArrayList<VideoTrailer> videoTrailerList) {
         this.videoTrailerList = videoTrailerList;
+    }
+
+    public ArrayList<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<Review> reviews) {
+        this.reviews = reviews;
     }
 }

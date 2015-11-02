@@ -42,7 +42,7 @@ public class MainActivityFragment extends Fragment {
     private GridView gridview;
     private ImageAdapter imageAdapter;
     private ArrayList<String> mListImages;
-    public static final String API_KEY = "9bc3a7bc8d59c59f5ce6afa05f9a3d60";
+    public static final String API_KEY = "";
     private String filter;
     private JsonObjectRequest jsObjRequest;
     private ActionBar mActionBar;
@@ -96,6 +96,7 @@ public class MainActivityFragment extends Fragment {
                 url = buildUrl(filter);
                 loadGridViewFromAPI(url);
                 mActionBar.setTitle("Most Popular Movies");
+                itemPosition = 0;
 
             }
         }
@@ -105,6 +106,7 @@ public class MainActivityFragment extends Fragment {
                 url = buildUrl(filter);
                 loadGridViewFromAPI(url);
                 mActionBar.setTitle("Top Rated Movies");
+                itemPosition = 0;
             }
         }
 
@@ -237,14 +239,14 @@ public class MainActivityFragment extends Fragment {
         SharedPreferences.Editor editor = data.edit();
         editor.clear();
         editor.putString("filter", filter);
-        editor.putInt("itemPosition", gridview.getFirstVisiblePosition());
+        //editor.putInt("itemPosition", gridview.getFirstVisiblePosition());
         editor.commit();
     }
 
     private void fetchDataSharedPreferences() {
         SharedPreferences data = getActivity().getSharedPreferences("items", getActivity().MODE_PRIVATE);
         filter = data.getString("filter", new String());
-        itemPosition = data.getInt("itemPosition", 0);
+        //itemPosition = data.getInt("itemPosition", 0);
         if (filter.isEmpty()) {
             filter = "popular";
         }
