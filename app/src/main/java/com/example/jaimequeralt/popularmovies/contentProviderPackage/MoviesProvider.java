@@ -114,6 +114,7 @@ public class MoviesProvider extends ContentProvider {
         public static final String COL_OVERVIEW = "overview";
         public static final String COL_RELEASE = "releaseDate";
         public static final String COL_RATING = "rating";
+        public static final String COL_IMAGE_DATA = "image_data" ;
 
         private Movies() {
         }

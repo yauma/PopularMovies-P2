@@ -1,6 +1,8 @@
 package com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.jaimequeralt.popularmovies.adaptersPackage.ReviewsAdapter;
+import com.example.jaimequeralt.popularmovies.databasePackage.DbBitmapUtility;
 import com.example.jaimequeralt.popularmovies.modelPackage.Movie;
 import com.example.jaimequeralt.popularmovies.R;
 import com.example.jaimequeralt.popularmovies.databasePackage.DbMovies;
@@ -26,6 +29,7 @@ import com.example.jaimequeralt.popularmovies.modelPackage.MySingleton;
 import com.example.jaimequeralt.popularmovies.modelPackage.Review;
 import com.example.jaimequeralt.popularmovies.modelPackage.VideoTrailer;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -96,7 +100,7 @@ public class DetailMovieActivityFragment extends Fragment {
         ratingBar.setRating(movie.getRating() / (10 / ratingBar.getNumStars()));
 
 
-        String url = "http://image.tmdb.org/t/p/w342/" + movie.getPoster_path();
+        url = "http://image.tmdb.org/t/p/w342/" + movie.getPoster_path();
 
         Picasso.with(getActivity())
                 .load(url)
@@ -110,8 +114,11 @@ public class DetailMovieActivityFragment extends Fragment {
         imageViewFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DbMovies.getInstance().insertMovie(getActivity(), movie);
-                Toast.makeText(getActivity(), "Save to Favorite", Toast.LENGTH_LONG).show();
+
+                Picasso.with(getActivity())
+                        .load(url)
+                        .into(target);
+
             }
         });
 
@@ -171,8 +178,13 @@ public class DetailMovieActivityFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         parseJsonReviewObject(response);
-                        ReviewsAdapter adapter = new ReviewsAdapter(getActivity(),movie.getReviews());
-                        listViewReview.setAdapter(adapter);
+                        if(movie.getReviews() == null){
+                            listViewReview.setVisibility(View.GONE);
+                        }
+                        else{
+                            ReviewsAdapter adapter = new ReviewsAdapter(getActivity(), movie.getReviews());
+                            listViewReview.setAdapter(adapter);
+                        }
                     }
                 }, new Response.ErrorListener() {
 
@@ -254,4 +266,23 @@ public class DetailMovieActivityFragment extends Fragment {
 
         return builtUri.toString();
     }
+
+    private Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            byte[] byteArrayBitmap = DbBitmapUtility.getBytes(bitmap);
+            DbMovies.getInstance().insertMovie(getActivity(), movie,byteArrayBitmap);
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    };
+
 }

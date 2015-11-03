@@ -2,7 +2,10 @@ package com.example.jaimequeralt.popularmovies.databasePackage;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.widget.Toast;
 
 import com.example.jaimequeralt.popularmovies.modelPackage.Movie;
 
@@ -29,7 +32,7 @@ public class DbMovies {
         return dbMovies;
     }
 
-    public void insertMovie(Context context, Movie movie) {
+    public void insertMovie(Context context, Movie movie, byte[] byteArrayBitmap) {
         dbHelper = new DbHelper(context, "MPM", null, 1);
         db = dbHelper.getWritableDatabase();
         ContentValues newMovie = new ContentValues();
@@ -40,12 +43,17 @@ public class DbMovies {
         newMovie.put("overview", movie.getOverview());
         newMovie.put("releaseDate", movie.getReleaseDate());
         newMovie.put("rating", movie.getRating());
-        try {
-                db.insert("movies", null, newMovie);
-            } catch (Exception f) {
-                f.printStackTrace();
-            }
-        }
+        newMovie.put("image_data", byteArrayBitmap);
 
+        try {
+            db.insertOrThrow("movies", null, newMovie);
+            Toast.makeText(context, "Movie Saved", Toast.LENGTH_LONG).show();
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Movie ALREADY Saved", Toast.LENGTH_LONG).show();
+        }
     }
+
+}
 

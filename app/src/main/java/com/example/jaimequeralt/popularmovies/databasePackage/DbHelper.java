@@ -31,7 +31,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 "poster_path TEXT UNIQUE, " +
                 "overview TEXT UNIQUE" +
                 ", releaseDate TEXT, " +
-                "rating REAL);");
+                "rating REAL," +
+                "image_data BLOB);");
     }
 
     @Override

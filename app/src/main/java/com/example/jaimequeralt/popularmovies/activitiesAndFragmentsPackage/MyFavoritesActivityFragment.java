@@ -30,6 +30,7 @@ public class MyFavoritesActivityFragment extends Fragment {
     private ArrayList<String> mListImages;
     private GridView gridview;
     private ImageAdapter imageAdapter;
+    private ArrayList<byte[]> mListArrayBitmap;
 
     public MyFavoritesActivityFragment() {
     }
@@ -49,6 +50,7 @@ public class MyFavoritesActivityFragment extends Fragment {
                 MoviesProvider.Movies.COL_POSTER,
                 MoviesProvider.Movies.COL_RATING,
                 MoviesProvider.Movies.COL_RELEASE,
+                MoviesProvider.Movies.COL_IMAGE_DATA,
         };
 
         Uri moviesUri = MoviesProvider.CONTENT_URI;
@@ -68,14 +70,17 @@ public class MyFavoritesActivityFragment extends Fragment {
             String poster;
             String releaseDate;
             float rating;
+            byte[] byteArrayBitmap;
             moviesList = new ArrayList<>();
             mListImages = new ArrayList<>();
+            mListArrayBitmap = new ArrayList<>();
 
             int colTitle = cur.getColumnIndex(MoviesProvider.Movies.COL_TITLE);
             int colOverview = cur.getColumnIndex(MoviesProvider.Movies.COL_OVERVIEW);
             int colPoster = cur.getColumnIndex(MoviesProvider.Movies.COL_POSTER);
             int colRelease = cur.getColumnIndex(MoviesProvider.Movies.COL_RELEASE);
             int colRating = cur.getColumnIndex(MoviesProvider.Movies.COL_RATING);
+            int colImageData = cur.getColumnIndex(MoviesProvider.Movies.COL_IMAGE_DATA);
 
 
             do {
@@ -84,10 +89,12 @@ public class MyFavoritesActivityFragment extends Fragment {
                 poster = cur.getString(colPoster);
                 releaseDate = cur.getString(colRelease);
                 rating = cur.getFloat(colRating);
+                byteArrayBitmap = cur.getBlob(colImageData);
 
                 Movie movie = new Movie(title, poster, overview, releaseDate, rating);
                 moviesList.add(movie);
                 mListImages.add(poster);
+                mListArrayBitmap.add(byteArrayBitmap);
             } while (cur.moveToNext());
         }
 
@@ -101,7 +108,7 @@ public class MyFavoritesActivityFragment extends Fragment {
         gridview = (GridView) rootView.findViewById(R.id.gridviewFavorites);
 
         if (moviesList != null) {
-            imageAdapter = new ImageAdapter(getActivity(), mListImages);
+            imageAdapter = new ImageAdapter(getActivity(), mListImages, mListArrayBitmap);
             gridview.setAdapter(imageAdapter);
 
         } else {

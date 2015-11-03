@@ -1,6 +1,11 @@
 package com.example.jaimequeralt.popularmovies.adaptersPackage;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.example.jaimequeralt.popularmovies.databasePackage.DbBitmapUtility;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -19,12 +26,19 @@ import static android.widget.ImageView.ScaleType.CENTER_CROP;
  */
 public class ImageAdapter extends BaseAdapter {
 
+    private ArrayList<byte[]> mListArrayBitmap;
     private Context mContext;
     private ArrayList<String> listPostersPaths;
 
     public ImageAdapter(Context c, ArrayList<String> listPostersPaths) {
         mContext = c;
         this.listPostersPaths = listPostersPaths;
+    }
+
+    public ImageAdapter(Context c, ArrayList<String> listPostersPaths, ArrayList<byte[]> mListArrayBitmap) {
+        mContext = c;
+        this.listPostersPaths = listPostersPaths;
+        this.mListArrayBitmap = mListArrayBitmap;
     }
 
     @Override
@@ -49,14 +63,24 @@ public class ImageAdapter extends BaseAdapter {
             view = new ImageView(mContext);
         }
         view.setAdjustViewBounds(true);
-        String url = "http://image.tmdb.org/t/p/w342/"+listPostersPaths.get(position);
+        String url = "http://image.tmdb.org/t/p/w342"+listPostersPaths.get(position);
         // Trigger the download of the URL asynchronously into the image view.
-        Picasso.with(mContext)
-                .load(url)
-                .into(view);
+        if(mListArrayBitmap != null){
+            Bitmap bitmap = DbBitmapUtility.getImage(mListArrayBitmap.get(position));
+            Drawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
+            view.setImageDrawable(drawable);
+        }
+        else {
+            Picasso.with(mContext)
+                    .load(url)
+                    .into(view);
+        }
 
         return view;
     }
+
+
+
 }
 
 
