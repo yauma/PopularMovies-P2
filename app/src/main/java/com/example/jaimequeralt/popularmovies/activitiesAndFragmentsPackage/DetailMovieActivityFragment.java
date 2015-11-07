@@ -1,14 +1,16 @@
 package com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -44,7 +46,7 @@ import java.util.ArrayList;
 public class DetailMovieActivityFragment extends Fragment {
 
     private Movie movie;
-    private TextView textViewTitle, textViewDate, textViewOverview, textViewRating;
+    private TextView textViewTitle, textViewDate, textViewOverview, textViewRating, textViewAuthor, textViewReview;
     private ImageView imageViewPoster, imageViewFavorite, imageViewPlayBack, imageViewPlayBack2;
     private RatingBar ratingBar;
     private String url;
@@ -54,9 +56,10 @@ public class DetailMovieActivityFragment extends Fragment {
     private int playBackButtonNumber;
     private JsonObjectRequest jsObjReviewRequest;
     private ArrayList<Review> mListVideoReviews;
-    private LinearLayout linearLayoutTrailers, linearLayoutPlayButton2;
+    private LinearLayout linearLayoutTrailers, linearLayoutPlayButton2, linearLayoutReview;
     private Review review;
-    private ListView listViewReview;
+    private Button buttonReadMore;
+    private ReviewListFragment.OnFragmentInteractionListener mListener;
 
 
     public DetailMovieActivityFragment() {
@@ -81,6 +84,9 @@ public class DetailMovieActivityFragment extends Fragment {
         textViewOverview = (TextView) rootview.findViewById(R.id.textViewOverview);
         textViewTitle = (TextView) rootview.findViewById(R.id.textViewTitle);
         textViewRating = (TextView) rootview.findViewById(R.id.textViewRating);
+        textViewAuthor = (TextView) rootview.findViewById(R.id.textViewAuthor);
+        textViewReview = (TextView) rootview.findViewById(R.id.textViewReview);
+
 
         imageViewPoster = (ImageView) rootview.findViewById(R.id.imageViewPoster);
         imageViewFavorite = (ImageView) rootview.findViewById(R.id.imageViewFavorite);
@@ -89,9 +95,11 @@ public class DetailMovieActivityFragment extends Fragment {
         imageViewPlayBack2 = (ImageView) rootview.findViewById(R.id.imageViewPlayBack2);
         linearLayoutTrailers = (LinearLayout) rootview.findViewById(R.id.linearLayoutTrailers);
         linearLayoutPlayButton2 = (LinearLayout) rootview.findViewById(R.id.linearLayoutPlayButton2);
-        listViewReview = (ListView) rootview.findViewById(R.id.listViewReview);
+        linearLayoutReview = (LinearLayout) rootview.findViewById(R.id.linearLayoutReview);
+        buttonReadMore = (Button) rootview.findViewById(R.id.buttonReadMore);
 
         linearLayoutTrailers.setVisibility(View.GONE);
+        linearLayoutReview.setVisibility(View.GONE);
 
         textViewTitle.setText(movie.getTitle());
         textViewDate.setText(movie.getReleaseDate());
@@ -140,6 +148,13 @@ public class DetailMovieActivityFragment extends Fragment {
             }
         });
 
+        buttonReadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener = (ReviewListFragment.OnFragmentInteractionListener) getActivity();
+                mListener.showReadMore(movie);
+            }
+        });
 
         return rootview;
     }
@@ -178,12 +193,10 @@ public class DetailMovieActivityFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         parseJsonReviewObject(response);
-                        if(movie.getReviews() == null){
-                            listViewReview.setVisibility(View.GONE);
-                        }
-                        else{
-                            ReviewsAdapter adapter = new ReviewsAdapter(getActivity(), movie.getReviews());
-                            listViewReview.setAdapter(adapter);
+                        if (movie.getReviews() != null) {
+                            linearLayoutReview.setVisibility(View.VISIBLE);
+                            textViewAuthor.setText(movie.getReviews().get(0).getAuthor());
+                            textViewReview.setText(movie.getReviews().get(0).getReview());
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -271,7 +284,7 @@ public class DetailMovieActivityFragment extends Fragment {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             byte[] byteArrayBitmap = DbBitmapUtility.getBytes(bitmap);
-            DbMovies.getInstance().insertMovie(getActivity(), movie,byteArrayBitmap);
+            DbMovies.getInstance().insertMovie(getActivity(), movie, byteArrayBitmap);
         }
 
         @Override

@@ -9,7 +9,7 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/background_light"
         android:fillViewport="false">
 
@@ -213,15 +213,65 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <FrameLayout
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:weightSum="1"
+                android:id="@+id/linearLayoutReview">
 
-                <ListView
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/listViewReview" />
-            </FrameLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/darker_gray"
+                    android:showDividers="end"
+                    android:id="@+id/linearLayout2" >
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="60dp"
+                        android:id="@+id/imageView2"
+                        android:src="@drawable/ic_action_dialog"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Text"
+                        android:id="@+id/textViewAuthor"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="30dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:showDividers="beginning" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textViewReview"
+                        android:layout_margin="20dp"
+                        android:text="Reviews;"
+                        android:textStyle="italic" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Read More"
+                        android:id="@+id/buttonReadMore"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@android:color/black"
+                        android:textColor="@android:color/white"
+                        android:onClick="readMore" />
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
 
 

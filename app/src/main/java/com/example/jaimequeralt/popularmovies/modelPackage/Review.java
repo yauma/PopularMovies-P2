@@ -1,13 +1,15 @@
 package com.example.jaimequeralt.popularmovies.modelPackage;
 
+import java.io.Serializable;
+
 /**
  * Created by jaimequeralt on 10/27/15.
  */
-public class Review {
+public class Review implements Serializable{
 
     String author,review;
 
-    public Review(String author, String review) {
+    public Review(String author, String review)  {
         this.author = author;
         this.review = review;
     }
