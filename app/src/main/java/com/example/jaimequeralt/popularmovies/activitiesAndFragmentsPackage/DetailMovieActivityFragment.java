@@ -45,6 +45,7 @@ import java.util.ArrayList;
  */
 public class DetailMovieActivityFragment extends Fragment {
 
+    private static final String ARG_PARAM1 = "Movie";
     private Movie movie;
     private TextView textViewTitle, textViewDate, textViewOverview, textViewRating, textViewAuthor, textViewReview;
     private ImageView imageViewPoster, imageViewFavorite, imageViewPlayBack, imageViewPlayBack2;
@@ -60,18 +61,33 @@ public class DetailMovieActivityFragment extends Fragment {
     private Review review;
     private Button buttonReadMore;
     private ReviewListFragment.OnFragmentInteractionListener mListener;
+    private MainActivityFragment.OnFragmentInteractionListenerMain mlistenerTwoPane;
 
 
     public DetailMovieActivityFragment() {
     }
 
+    public static DetailMovieActivityFragment newInstance(Movie movie) {
+        DetailMovieActivityFragment fragment = new DetailMovieActivityFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_PARAM1, movie);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Object ObjectMovie = getActivity().getIntent().getExtras().getParcelable("Movie");
-        movie = (Movie) ObjectMovie;
+        //if movie null movie is pass via intent because TwoPane is false
 
+        if (getArguments() != null) {
+            movie = getArguments().getParcelable(ARG_PARAM1);
+
+        } else {
+            Object ObjectMovie = getActivity().getIntent().getExtras().getParcelable(ARG_PARAM1);
+            movie = (Movie) ObjectMovie;
+
+        }
 
     }
 
@@ -102,7 +118,7 @@ public class DetailMovieActivityFragment extends Fragment {
         linearLayoutReview.setVisibility(View.GONE);
 
         textViewTitle.setText(movie.getTitle());
-        textViewDate.setText(movie.getReleaseDate());
+        textViewDate.setText('\n'+movie.getReleaseDate());
         textViewOverview.setText(movie.getOverview());
         textViewRating.setText(String.valueOf(movie.getRating()) + "/10");
         ratingBar.setRating(movie.getRating() / (10 / ratingBar.getNumStars()));
@@ -151,8 +167,14 @@ public class DetailMovieActivityFragment extends Fragment {
         buttonReadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener = (ReviewListFragment.OnFragmentInteractionListener) getActivity();
-                mListener.showReadMore(movie);
+                if (MainActivity.mTwoPane) {
+                    mlistenerTwoPane = (MainActivityFragment.OnFragmentInteractionListenerMain) getActivity();
+                    mlistenerTwoPane.showReviews(movie);
+                } else {
+                    mListener = (ReviewListFragment.OnFragmentInteractionListener) getActivity();
+                    mListener.showReadMore(movie);
+                }
+
             }
         });
 

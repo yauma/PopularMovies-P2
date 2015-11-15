@@ -2,7 +2,6 @@ package com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,12 +29,14 @@ public class ReviewListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "reviewsList";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM2 = "movie";
 
     // TODO: Rename and change types of parameters
     private ArrayList<Review> reviewsList;
-
+    private Movie movie;
     private OnFragmentInteractionListener mListener;
+    private MainActivityFragment.OnFragmentInteractionListenerMain mListenerTwoPane;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -45,10 +46,11 @@ public class ReviewListFragment extends Fragment {
      * @return A new instance of fragment ReviewListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ReviewListFragment newInstance(ArrayList<Review> listReviews) {
+    public static ReviewListFragment newInstance(Movie movie) {
         ReviewListFragment fragment = new ReviewListFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, listReviews);
+        args.putSerializable(ARG_PARAM1, movie.getReviews());
+        args.putParcelable(ARG_PARAM2,movie);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,6 +64,7 @@ public class ReviewListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             reviewsList = (ArrayList<Review>) getArguments().getSerializable(ARG_PARAM1);
+            movie = getArguments().getParcelable(ARG_PARAM2);
         }
     }
 
@@ -74,13 +77,18 @@ public class ReviewListFragment extends Fragment {
         ListView listViewReview = (ListView) rootView.findViewById(R.id.listViewReviews);
         ImageButton imageButtonCancel = (ImageButton) rootView.findViewById(R.id.imageButtonCancel);
 
-        ReviewsAdapter reviewsAdapter = new ReviewsAdapter(getActivity(),reviewsList);
+        ReviewsAdapter reviewsAdapter = new ReviewsAdapter(getActivity(), reviewsList);
         listViewReview.setAdapter(reviewsAdapter);
 
         imageButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.showDetails();
+                if(MainActivity.mTwoPane){
+                    mListenerTwoPane.showDetails(movie);
+                }else{
+                    mListener.showDetails();
+
+                }
             }
         });
 
@@ -88,13 +96,16 @@ public class ReviewListFragment extends Fragment {
     }
 
 
-
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            if (MainActivity.mTwoPane) {
+                mListenerTwoPane = (MainActivityFragment.OnFragmentInteractionListenerMain) getActivity();
+            } else {
+                mListener = (OnFragmentInteractionListener) activity;
+            }
+
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -104,6 +115,7 @@ public class ReviewListFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        mListenerTwoPane = null;
         mListener = null;
     }
 

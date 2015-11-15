@@ -88,7 +88,7 @@ public class DetailMovieActivity extends ActionBarActivity implements ReviewList
 
     @Override
     public void showReadMore(Movie movie) {
-        reviewListFragment = ReviewListFragment.newInstance(movie.getReviews());
+        reviewListFragment = ReviewListFragment.newInstance(movie);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack

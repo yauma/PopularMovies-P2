@@ -1,10 +1,11 @@
 package com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage;
 
 
+import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -49,8 +50,9 @@ public class MainActivityFragment extends Fragment {
     private Movie movie;
     private ArrayList<Movie> listMovies;
     private String url;
-    private int  itemPosition = 0;
-
+    private int itemPosition = 0;
+    private DetailMovieActivityFragment detailMovieActivityFragment;
+    private OnFragmentInteractionListenerMain mListener;
 
     public MainActivityFragment() {
     }
@@ -61,25 +63,32 @@ public class MainActivityFragment extends Fragment {
 
         fetchDataSharedPreferences();
 
+        setHasOptionsMenu(true);
+
         if (savedInstanceState != null) {
             mListImages = (ArrayList<String>) savedInstanceState.get("listImages");
             listMovies = (ArrayList<Movie>) savedInstanceState.get("listMovies");
             itemPosition = savedInstanceState.getInt("itemPosition");
         }
-        setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+        Context c = getActivity();
         mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (filter.equals("popular")) {
             mActionBar.setTitle("Most Popular Movies");
         } else {
             mActionBar.setTitle("Top Rated Movies");
         }
-
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_fragment_gridview, menu);
     }
 
     @Override
@@ -111,8 +120,12 @@ public class MainActivityFragment extends Fragment {
         }
 
         if (id == R.id.favorites) {
-            Intent intent = new Intent(getActivity(),MyFavoritesActivity.class);
-            startActivity(intent);
+            if (MainActivity.mTwoPane) {
+                mListener.showFavorites();
+            } else {
+                Intent intent = new Intent(getActivity(), MyFavoritesActivity.class);
+                startActivity(intent);
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -127,6 +140,7 @@ public class MainActivityFragment extends Fragment {
 
         gridview = (GridView) rootView.findViewById(R.id.gridview);
 
+        mListener = (OnFragmentInteractionListenerMain) getActivity();
 
         if (mListImages != null) {
             imageAdapter = new ImageAdapter(getActivity(), mListImages);
@@ -140,10 +154,14 @@ public class MainActivityFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Intent intent = new Intent(getActivity(), DetailMovieActivity.class);
-                intent.putExtra("Movie", listMovies.get(position));
-                intent.putExtra("activity", "main");
-                startActivity(intent);
+                if (MainActivity.mTwoPane) {
+                    mListener.refreshDetailFragment(listMovies.get(position));
+                } else {
+                    Intent intent = new Intent(getActivity(), DetailMovieActivity.class);
+                    intent.putExtra("Movie", listMovies.get(position));
+                    intent.putExtra("activity", "main");
+                    startActivity(intent);
+                }
             }
         });
 
@@ -163,6 +181,12 @@ public class MainActivityFragment extends Fragment {
                         imageAdapter = new ImageAdapter(getActivity(), mListImages);
                         gridview.setAdapter(imageAdapter);
                         gridview.setSelection(itemPosition);
+                        if (MainActivity.mTwoPane) {
+
+                            mListener.refreshDetailFragment(listMovies.get(0));
+                        }
+
+
                     }
                 }, new Response.ErrorListener() {
 
@@ -202,7 +226,7 @@ public class MainActivityFragment extends Fragment {
                 String overview = posterObj.getString("overview");
                 String releaseDate = posterObj.getString("release_date");
                 float average = Float.parseFloat(posterObj.getString("vote_average"));
-                movie = new Movie(id,originalTitle, posterPath, overview, releaseDate, average);
+                movie = new Movie(id, originalTitle, posterPath, overview, releaseDate, average);
                 listMovies.add(movie);
                 mListImages.add(posterPath);
 
@@ -252,4 +276,14 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
+    public interface OnFragmentInteractionListenerMain {
+
+        void refreshDetailFragment(Movie movie);
+
+        void showReviews(Movie movie);
+
+        void showDetails(Movie movie);
+
+        void showFavorites();
+    }
 }

@@ -1,10 +1,10 @@
 package com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage;
 
+import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +31,7 @@ public class MyFavoritesActivityFragment extends Fragment {
     private GridView gridview;
     private ImageAdapter imageAdapter;
     private ArrayList<byte[]> mListArrayBitmap;
+    private MainActivityFragment.OnFragmentInteractionListenerMain mListener;
 
     public MyFavoritesActivityFragment() {
     }
@@ -40,6 +41,13 @@ public class MyFavoritesActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         getListMoviesFromContentProvider();
+
+        mListener = (MainActivityFragment.OnFragmentInteractionListenerMain) getActivity();
+        if (MainActivity.mTwoPane) {
+
+            mListener.refreshDetailFragment(moviesList.get(0));
+        }
+
     }
 
     private void getListMoviesFromContentProvider() {
@@ -112,19 +120,27 @@ public class MyFavoritesActivityFragment extends Fragment {
             gridview.setAdapter(imageAdapter);
 
         } else {
-            Toast.makeText(getActivity(),"No favorite movies saved",Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "No favorite movies saved", Toast.LENGTH_LONG).show();
         }
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Intent intent = new Intent(getActivity(), DetailMovieActivity.class);
-                intent.putExtra("Movie", moviesList.get(position));
-                intent.putExtra("activity", "favorites");
-                startActivity(intent);
+                if (MainActivity.mTwoPane) {
+                    mListener.refreshDetailFragment(moviesList.get(position));
+
+                } else {
+                    Intent intent = new Intent(getActivity(), DetailMovieActivity.class);
+                    intent.putExtra("Movie", moviesList.get(position));
+                    intent.putExtra("activity", "favorites");
+                    startActivity(intent);
+                }
+
             }
         });
 
         return rootView;
     }
+
+
 }

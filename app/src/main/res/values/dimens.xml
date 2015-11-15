@@ -7,5 +7,5 @@
     <dimen name="textsize">18dp</dimen>
     <dimen name="linearlayout_margin">10dp</dimen>
     <dimen name="linearlayout_margin_top">20dp</dimen>
-    <dimen name="columnWidth">300dp</dimen>
+    <dimen name="columnWidth">150dp</dimen>
 </resources>
