@@ -15,6 +15,7 @@ public class Movie implements Parcelable {
     private int id;
     private ArrayList<VideoTrailer> videoTrailerList;
     private ArrayList<Review> reviews;
+    byte[] imageByteArray;
 
 
     public Movie(int id, String title, String poster_path, String overview, String releaseDate, float rating) {
@@ -141,5 +142,13 @@ public class Movie implements Parcelable {
 
     public void setReviews(ArrayList<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public byte[] getImageByteArray() {
+        return imageByteArray;
+    }
+
+    public void setImageByteArray(byte[] imageByteArray) {
+        this.imageByteArray = imageByteArray;
     }
 }

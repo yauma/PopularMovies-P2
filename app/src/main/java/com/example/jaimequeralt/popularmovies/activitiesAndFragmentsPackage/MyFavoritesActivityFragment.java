@@ -116,8 +116,7 @@ public class MyFavoritesActivityFragment extends Fragment {
         gridview = (GridView) rootView.findViewById(R.id.gridviewFavorites);
 
         if (moviesList != null) {
-            imageAdapter = new ImageAdapter(getActivity(), mListImages, mListArrayBitmap);
-            gridview.setAdapter(imageAdapter);
+
 
         } else {
             Toast.makeText(getActivity(), "No favorite movies saved", Toast.LENGTH_LONG).show();

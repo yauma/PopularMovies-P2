@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.jaimequeralt.popularmovies.adaptersPackage.ImageAdapter;
 import com.example.jaimequeralt.popularmovies.modelPackage.Movie;
+import com.example.jaimequeralt.popularmovies.modelPackage.MovieModel;
 import com.example.jaimequeralt.popularmovies.modelPackage.MySingleton;
 import com.example.jaimequeralt.popularmovies.R;
 
@@ -53,6 +54,7 @@ public class MainActivityFragment extends Fragment {
     private int itemPosition = 0;
     private DetailMovieActivityFragment detailMovieActivityFragment;
     private OnFragmentInteractionListenerMain mListener;
+    private MovieModel movieModel;
 
     public MainActivityFragment() {
     }
@@ -120,12 +122,8 @@ public class MainActivityFragment extends Fragment {
         }
 
         if (id == R.id.favorites) {
-            if (MainActivity.mTwoPane) {
-                mListener.showFavorites();
-            } else {
-                Intent intent = new Intent(getActivity(), MyFavoritesActivity.class);
-                startActivity(intent);
-            }
+            loadGridViewFromDb();
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -199,6 +197,19 @@ public class MainActivityFragment extends Fragment {
         // Access the RequestQueue through your singleton class.
         MySingleton.getInstance(getActivity()).addToRequestQueue(jsObjRequest);
     }
+
+    private void loadGridViewFromDb() {
+        movieModel = MovieModel.getInstance();
+        listMovies =movieModel.getListMoviesFromDb(getActivity());
+        imageAdapter = new ImageAdapter(getActivity(), listMovies);
+        gridview.setAdapter(imageAdapter);
+        gridview.setSelection(itemPosition);
+        if (MainActivity.mTwoPane) {
+
+            mListener.refreshDetailFragment(listMovies.get(0));
+        }
+    }
+
 
     private String buildUrl(String filter) {
         final String POPULAR_MOVIES_BASE_URL =

@@ -1,5 +1,6 @@
 package com.example.jaimequeralt.popularmovies.adaptersPackage;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.example.jaimequeralt.popularmovies.databasePackage.DbBitmapUtility;
+import com.example.jaimequeralt.popularmovies.modelPackage.Movie;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -26,7 +28,7 @@ import static android.widget.ImageView.ScaleType.CENTER_CROP;
  */
 public class ImageAdapter extends BaseAdapter {
 
-    private ArrayList<byte[]> mListArrayBitmap;
+    private ArrayList<Movie> listMovies;
     private Context mContext;
     private ArrayList<String> listPostersPaths;
 
@@ -35,14 +37,17 @@ public class ImageAdapter extends BaseAdapter {
         this.listPostersPaths = listPostersPaths;
     }
 
-    public ImageAdapter(Context c, ArrayList<String> listPostersPaths, ArrayList<byte[]> mListArrayBitmap) {
-        mContext = c;
-        this.listPostersPaths = listPostersPaths;
-        this.mListArrayBitmap = mListArrayBitmap;
+    public ImageAdapter(Activity activity, ArrayList<Movie> listMovies) {
+        mContext = activity;
+        this.listMovies = listMovies;
+
     }
 
     @Override
     public int getCount() {
+        if(listPostersPaths == null){
+            return listMovies.size();
+        }
         return listPostersPaths.size();
     }
 
@@ -63,14 +68,15 @@ public class ImageAdapter extends BaseAdapter {
             view = new ImageView(mContext);
         }
         view.setAdjustViewBounds(true);
-        String url = "http://image.tmdb.org/t/p/w342"+listPostersPaths.get(position);
-        // Trigger the download of the URL asynchronously into the image view.
-        if(mListArrayBitmap != null){
-            Bitmap bitmap = DbBitmapUtility.getImage(mListArrayBitmap.get(position));
+
+        if(listMovies != null){
+            Bitmap bitmap = DbBitmapUtility.getImage(listMovies.get(position).getImageByteArray());
             Drawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
             view.setImageDrawable(drawable);
         }
         else {
+            String url = "http://image.tmdb.org/t/p/w342"+listPostersPaths.get(position);
+            // Trigger the download of the URL asynchronously into the image view.
             Picasso.with(mContext)
                     .load(url)
                     .into(view);
