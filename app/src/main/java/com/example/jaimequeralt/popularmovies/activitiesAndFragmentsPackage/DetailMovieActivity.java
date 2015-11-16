@@ -71,9 +71,6 @@ public class DetailMovieActivity extends ActionBarActivity implements ReviewList
             if (activity.equals("main")) {
                 Intent intent = new Intent(DetailMovieActivity.this, MainActivity.class);
                 startActivity(intent);
-            } else {
-                Intent intent = new Intent(DetailMovieActivity.this, MyFavoritesActivity.class);
-                startActivity(intent);
             }
 
         }

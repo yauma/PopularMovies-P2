@@ -33,14 +33,6 @@
             android:name=".contentProviderPackage.MoviesProvider"
             android:authorities="com.jaimequeralt.popularmovies.contentproviders" />
 
-        <activity
-            android:name=".activitiesAndFragmentsPackage.MyFavoritesActivity"
-            android:label="@string/title_activity_my_favorites"
-            android:parentActivityName=".activitiesAndFragmentsPackage.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage.MainActivity" />
-        </activity>
     </application>
 
 </manifest>

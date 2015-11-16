@@ -121,11 +121,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
     @Override
     public void showFavorites() {
-        MyFavoritesActivityFragment myFavoritesActivityFragment = new MyFavoritesActivityFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.list_container, myFavoritesActivityFragment);
-        transaction.addToBackStack(null);
-// Commit the transaction
-        transaction.commit();
+
     }
 }
