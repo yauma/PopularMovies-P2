@@ -30,12 +30,7 @@ public class ImageAdapter extends BaseAdapter {
 
     private ArrayList<Movie> listMovies;
     private Context mContext;
-    private ArrayList<String> listPostersPaths;
 
-    public ImageAdapter(Context c, ArrayList<String> listPostersPaths) {
-        mContext = c;
-        this.listPostersPaths = listPostersPaths;
-    }
 
     public ImageAdapter(Activity activity, ArrayList<Movie> listMovies) {
         mContext = activity;
@@ -45,10 +40,7 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if(listPostersPaths == null){
-            return listMovies.size();
-        }
-        return listPostersPaths.size();
+        return listMovies.size();
     }
 
     @Override
@@ -69,13 +61,13 @@ public class ImageAdapter extends BaseAdapter {
         }
         view.setAdjustViewBounds(true);
 
-        if(listMovies != null){
+        if(listMovies.get(position).getImageByteArray() != null){
             Bitmap bitmap = DbBitmapUtility.getImage(listMovies.get(position).getImageByteArray());
             Drawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
             view.setImageDrawable(drawable);
         }
         else {
-            String url = "http://image.tmdb.org/t/p/w342"+listPostersPaths.get(position);
+            String url = "http://image.tmdb.org/t/p/w342"+listMovies.get(position).getPoster_path();
             // Trigger the download of the URL asynchronously into the image view.
             Picasso.with(mContext)
                     .load(url)

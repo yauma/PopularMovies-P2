@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     public static boolean mTwoPane;
     private ReviewListFragment reviewListFragment;
     private DetailMovieActivityFragment detailMovieActivityFragment;
+    private boolean firstTimeload = true;
 
 
     public Bundle getParams() {
@@ -80,7 +81,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     }
 
 
-    private void refreshDetailFragmentFromMainActivity(Movie movie) {
+
+    @Override
+    public void refreshDetailFragment(Movie movie) {
         detailMovieActivityFragment = DetailMovieActivityFragment.newInstance(movie);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 // Replace whatever is in the fragment_container view with this fragment,
@@ -89,11 +92,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         transaction.addToBackStack(null);
 // Commit the transaction
         transaction.commit();
-    }
-
-    @Override
-    public void refreshDetailFragment(Movie movie) {
-        refreshDetailFragmentFromMainActivity(movie);
     }
 
     @Override
@@ -119,8 +117,4 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
     }
 
-    @Override
-    public void showFavorites() {
-
-    }
 }

@@ -43,7 +43,6 @@ public class MainActivityFragment extends Fragment {
 
     private GridView gridview;
     private ImageAdapter imageAdapter;
-    private ArrayList<String> mListImages;
     public static final String API_KEY = "9bc3a7bc8d59c59f5ce6afa05f9a3d60";
     private String filter;
     private JsonObjectRequest jsObjRequest;
@@ -51,7 +50,7 @@ public class MainActivityFragment extends Fragment {
     private Movie movie;
     private ArrayList<Movie> listMovies;
     private String url;
-    private int itemPosition = 0;
+    private int itemPosition = 0, moviePosition = 0;
     private DetailMovieActivityFragment detailMovieActivityFragment;
     private OnFragmentInteractionListenerMain mListener;
     private MovieModel movieModel;
@@ -68,9 +67,9 @@ public class MainActivityFragment extends Fragment {
         setHasOptionsMenu(true);
 
         if (savedInstanceState != null) {
-            mListImages = (ArrayList<String>) savedInstanceState.get("listImages");
             listMovies = (ArrayList<Movie>) savedInstanceState.get("listMovies");
             itemPosition = savedInstanceState.getInt("itemPosition");
+            moviePosition = savedInstanceState.getInt("moviePosition");
         }
 
     }
@@ -84,8 +83,10 @@ public class MainActivityFragment extends Fragment {
         mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (filter.equals("popular")) {
             mActionBar.setTitle("Most Popular Movies");
-        } else {
+        } else if (filter.equals("top_rated")) {
             mActionBar.setTitle("Top Rated Movies");
+        } else if (filter.equals("favorites")) {
+            mActionBar.setTitle("Favorites Movies");
         }
     }
 
@@ -102,7 +103,7 @@ public class MainActivityFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.most_polular) {
-            if (filter.equals("top_rated")) {
+            if (filter != "popular") {
                 filter = "popular";
                 url = buildUrl(filter);
                 loadGridViewFromAPI(url);
@@ -112,7 +113,7 @@ public class MainActivityFragment extends Fragment {
             }
         }
         if (id == R.id.top_rated) {
-            if (filter.equals("popular")) {
+            if (filter != "top_rated") {
                 filter = "top_rated";
                 url = buildUrl(filter);
                 loadGridViewFromAPI(url);
@@ -122,7 +123,13 @@ public class MainActivityFragment extends Fragment {
         }
 
         if (id == R.id.favorites) {
-            loadGridViewFromDb();
+            if (filter != "favorites") {
+                filter = "favorites";
+                loadGridViewFromDb();
+                mActionBar.setTitle("Favorites Movies");
+                itemPosition = 0;
+            }
+
 
         }
 
@@ -140,18 +147,27 @@ public class MainActivityFragment extends Fragment {
 
         mListener = (OnFragmentInteractionListenerMain) getActivity();
 
-        if (mListImages != null) {
-            imageAdapter = new ImageAdapter(getActivity(), mListImages);
+        if (listMovies != null) {
+            imageAdapter = new ImageAdapter(getActivity(), listMovies);
             gridview.setAdapter(imageAdapter);
             gridview.setSelection(itemPosition);
+            if (MainActivity.mTwoPane) {
+                mListener.refreshDetailFragment(listMovies.get(moviePosition));
+            }
         } else {
-            url = buildUrl(filter);
-            loadGridViewFromAPI(url);
+            if (filter.equals("favorites")) {
+                loadGridViewFromDb();
+            } else {
+                url = buildUrl(filter);
+                loadGridViewFromAPI(url);
+            }
+
         }
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
+                moviePosition = position;
                 if (MainActivity.mTwoPane) {
                     mListener.refreshDetailFragment(listMovies.get(position));
                 } else {
@@ -175,13 +191,13 @@ public class MainActivityFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        mListImages = parseJsonObject(response);
-                        imageAdapter = new ImageAdapter(getActivity(), mListImages);
+                        listMovies = parseJsonObject(response);
+                        imageAdapter = new ImageAdapter(getActivity(), listMovies);
                         gridview.setAdapter(imageAdapter);
                         gridview.setSelection(itemPosition);
                         if (MainActivity.mTwoPane) {
 
-                            mListener.refreshDetailFragment(listMovies.get(0));
+                            mListener.refreshDetailFragment(listMovies.get(moviePosition));
                         }
 
 
@@ -200,13 +216,13 @@ public class MainActivityFragment extends Fragment {
 
     private void loadGridViewFromDb() {
         movieModel = MovieModel.getInstance();
-        listMovies =movieModel.getListMoviesFromDb(getActivity());
+        listMovies = movieModel.getListMoviesFromDb(getActivity());
         imageAdapter = new ImageAdapter(getActivity(), listMovies);
         gridview.setAdapter(imageAdapter);
         gridview.setSelection(itemPosition);
         if (MainActivity.mTwoPane) {
 
-            mListener.refreshDetailFragment(listMovies.get(0));
+            mListener.refreshDetailFragment(listMovies.get(moviePosition));
         }
     }
 
@@ -223,9 +239,8 @@ public class MainActivityFragment extends Fragment {
         return builtUri.toString();
     }
 
-    private ArrayList<String> parseJsonObject(JSONObject response) {
+    private ArrayList<Movie> parseJsonObject(JSONObject response) {
         movie = new Movie();
-        mListImages = new ArrayList<>();
         listMovies = new ArrayList<>();
         try {
             JSONArray results = response.getJSONArray("results");
@@ -239,24 +254,22 @@ public class MainActivityFragment extends Fragment {
                 float average = Float.parseFloat(posterObj.getString("vote_average"));
                 movie = new Movie(id, originalTitle, posterPath, overview, releaseDate, average);
                 listMovies.add(movie);
-                mListImages.add(posterPath);
-
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return mListImages;
+        return listMovies;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putStringArrayList("listImages", mListImages);
         outState.putParcelableArrayList("listMovies", listMovies);
         outState.putString("filter", filter);
         itemPosition = gridview.getFirstVisiblePosition();
         outState.putInt("itemPosition", itemPosition);
+        outState.putInt("moviePosition", moviePosition);
     }
 
     @Override
@@ -295,6 +308,5 @@ public class MainActivityFragment extends Fragment {
 
         void showDetails(Movie movie);
 
-        void showFavorites();
     }
 }
