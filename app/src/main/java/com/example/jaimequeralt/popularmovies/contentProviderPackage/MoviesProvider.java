@@ -117,6 +117,7 @@ public class MoviesProvider extends ContentProvider {
     public static final class Movies implements BaseColumns {
 
         //Column names
+        public static final String COL_MOVIE_ID = "movie_id";
         public static final String COL_TITLE = "title";
         public static final String COL_POSTER = "poster_path";
         public static final String COL_OVERVIEW = "overview";
@@ -130,9 +131,10 @@ public class MoviesProvider extends ContentProvider {
 
     }
 
-    public   static ArrayList<Movie> getListMoviesFromContentProvider(Context context) {
+    public static ArrayList<Movie> getListMoviesFromContentProvider(Context context) {
         String[] projection = new String[]{
                 MoviesProvider.Movies._ID,
+                MoviesProvider.Movies.COL_MOVIE_ID,
                 MoviesProvider.Movies.COL_TITLE,
                 MoviesProvider.Movies.COL_OVERVIEW,
                 MoviesProvider.Movies.COL_POSTER,
@@ -153,6 +155,7 @@ public class MoviesProvider extends ContentProvider {
                 null);
 
         if (cur.moveToFirst()) {
+            int movieId;
             String title;
             String overview;
             String poster;
@@ -161,6 +164,7 @@ public class MoviesProvider extends ContentProvider {
             byte[] byteArrayBitmap;
             moviesList = new ArrayList<>();
 
+            int colmovieId = cur.getColumnIndex(Movies.COL_MOVIE_ID);
             int colTitle = cur.getColumnIndex(MoviesProvider.Movies.COL_TITLE);
             int colOverview = cur.getColumnIndex(MoviesProvider.Movies.COL_OVERVIEW);
             int colPoster = cur.getColumnIndex(MoviesProvider.Movies.COL_POSTER);
@@ -170,6 +174,7 @@ public class MoviesProvider extends ContentProvider {
 
 
             do {
+                movieId = cur.getInt(colmovieId);
                 title = cur.getString(colTitle);
                 overview = cur.getString(colOverview);
                 poster = cur.getString(colPoster);
@@ -177,7 +182,7 @@ public class MoviesProvider extends ContentProvider {
                 rating = cur.getFloat(colRating);
                 byteArrayBitmap = cur.getBlob(colImageData);
 
-                Movie movie = new Movie(title, poster, overview, releaseDate, rating);
+                Movie movie = new Movie(movieId, title, poster, overview, releaseDate, rating);
                 movie.setImageByteArray(byteArrayBitmap);
                 moviesList.add(movie);
             } while (cur.moveToNext());

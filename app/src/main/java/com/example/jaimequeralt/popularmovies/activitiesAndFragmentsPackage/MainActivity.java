@@ -1,6 +1,9 @@
 package com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -19,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     private ReviewListFragment reviewListFragment;
     private DetailMovieActivityFragment detailMovieActivityFragment;
     private boolean firstTimeload = true;
+    private MainActivityFragment mainActivityFragment;
+    public static boolean INTERNET_CONNECTION;
 
 
     public Bundle getParams() {
@@ -29,9 +34,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        INTERNET_CONNECTION = isNetworkAvailable();
         setContentView(R.layout.activity_main);
 
-        setGridFragment();
 
         if (findViewById(R.id.detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
@@ -42,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             // adding or replacing the detail fragment using a
             // fragment transaction.
             if (savedInstanceState == null) {
-
+                setGridFragment();
             }
         } else {
             mTwoPane = false;
@@ -52,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     }
 
     private void setGridFragment() {
-        MainActivityFragment mainActivityFragment = new MainActivityFragment();
+        mainActivityFragment = MainActivityFragment.getInstance();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.add(R.id.list_container, mainActivityFragment);
         transaction.addToBackStack(null);
@@ -79,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
     @Override
@@ -117,4 +121,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
     }
 
+    //Based on a stackoverflow snippet
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }

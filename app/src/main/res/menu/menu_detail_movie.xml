@@ -3,4 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage.DetailMovieActivity">
 
+    <item android:id="@+id/action_share"
+        android:title="@string/action_detail_share"
+        app:showAsAction="always"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"></item>
+
 </menu>
+

@@ -2,12 +2,19 @@ package com.example.jaimequeralt.popularmovies.activitiesAndFragmentsPackage;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.ActionProvider;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -62,6 +69,8 @@ public class DetailMovieActivityFragment extends Fragment {
     private Button buttonReadMore;
     private ReviewListFragment.OnFragmentInteractionListener mListener;
     private MainActivityFragment.OnFragmentInteractionListenerMain mlistenerTwoPane;
+    private Uri videoUrl;
+    private ShareActionProvider mShareActionProvider;
 
 
     public DetailMovieActivityFragment() {
@@ -92,6 +101,43 @@ public class DetailMovieActivityFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        // Inflate menu resource file.
+        inflater.inflate(R.menu.menu_detail_movie, menu);
+
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.action_share);
+
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+
+    }
+
+    private Intent createShareIntent() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+        if (movie.getVideoTrailerList() != null) {
+            videoUrl = generateUrlWithKey(0);
+            String movieUrl = String.valueOf(videoUrl);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, movieUrl);
+            return sendIntent;
+        }
+        String movieName = movie.getTitle();
+        sendIntent.putExtra(Intent.EXTRA_TEXT, movieName);
+        return sendIntent;
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_detail_movie, container, false);
@@ -118,7 +164,7 @@ public class DetailMovieActivityFragment extends Fragment {
         linearLayoutReview.setVisibility(View.GONE);
 
         textViewTitle.setText(movie.getTitle());
-        textViewDate.setText('\n'+movie.getReleaseDate());
+        textViewDate.setText('\n' + movie.getReleaseDate());
         textViewOverview.setText(movie.getOverview());
         textViewRating.setText(String.valueOf(movie.getRating()) + "/10");
         ratingBar.setRating(movie.getRating() / (10 / ratingBar.getNumStars()));
@@ -129,6 +175,7 @@ public class DetailMovieActivityFragment extends Fragment {
         Picasso.with(getActivity())
                 .load(url)
                 .into(imageViewPoster);
+
 
         String urlTrailers = buildUrlTrailers(movie.getId());
         String urlReviews = buildUrlReviews(movie.getId());
@@ -159,7 +206,7 @@ public class DetailMovieActivityFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 playBackButtonNumber = 1;
-                Uri videoUrl = generateUrlWithKey(playBackButtonNumber);
+                videoUrl = generateUrlWithKey(playBackButtonNumber);
                 startActivity(new Intent(Intent.ACTION_VIEW, videoUrl));
             }
         });
@@ -195,6 +242,9 @@ public class DetailMovieActivityFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         parseJsonTrailerObject(response);
+                        if (mShareActionProvider != null) {
+                            mShareActionProvider.setShareIntent(createShareIntent());
+                        }
                     }
                 }, new Response.ErrorListener() {
 
@@ -242,6 +292,7 @@ public class DetailMovieActivityFragment extends Fragment {
                 linearLayoutTrailers.setVisibility(View.VISIBLE);
                 if (results.length() == 1) {
                     linearLayoutPlayButton2.setVisibility(View.GONE);
+
                 }
                 for (int i = 0; i < results.length(); i++) {
 

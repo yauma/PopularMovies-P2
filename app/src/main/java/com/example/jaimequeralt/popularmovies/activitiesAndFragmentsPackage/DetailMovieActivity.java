@@ -54,9 +54,7 @@ public class DetailMovieActivity extends ActionBarActivity implements ReviewList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_detail_movie, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
