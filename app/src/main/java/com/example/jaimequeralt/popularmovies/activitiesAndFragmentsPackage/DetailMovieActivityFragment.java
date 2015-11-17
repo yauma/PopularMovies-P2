@@ -4,7 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -172,10 +174,16 @@ public class DetailMovieActivityFragment extends Fragment {
 
         url = "http://image.tmdb.org/t/p/w342/" + movie.getPoster_path();
 
-        Picasso.with(getActivity())
-                .load(url)
-                .into(imageViewPoster);
+        if (movie.getImageByteArray() != null) {
+            Bitmap bitmap = DbBitmapUtility.getImage(movie.getImageByteArray());
+            Drawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
+            imageViewPoster.setImageDrawable(drawable);
+        } else {
+            Picasso.with(getActivity())
+                    .load(url)
+                    .into(imageViewPoster);
 
+        }
 
         String urlTrailers = buildUrlTrailers(movie.getId());
         String urlReviews = buildUrlReviews(movie.getId());

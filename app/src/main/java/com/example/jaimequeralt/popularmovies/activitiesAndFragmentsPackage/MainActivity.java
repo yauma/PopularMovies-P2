@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.example.jaimequeralt.popularmovies.R;
 import com.example.jaimequeralt.popularmovies.modelPackage.Movie;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         super.onCreate(savedInstanceState);
 
         INTERNET_CONNECTION = isNetworkAvailable();
+        if (INTERNET_CONNECTION == false){
+            Toast.makeText(this,"No internet connection avalaible",Toast.LENGTH_LONG).show();
+        }
         setContentView(R.layout.activity_main);
 
 

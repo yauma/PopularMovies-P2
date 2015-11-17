@@ -74,6 +74,10 @@ public class MainActivityFragment extends Fragment {
 
         fetchDataSharedPreferences();
 
+        if(MainActivity.INTERNET_CONNECTION == false){
+            filter = "favorites";
+        }
+
         setHasOptionsMenu(true);
 
         if (savedInstanceState != null) {
@@ -81,7 +85,6 @@ public class MainActivityFragment extends Fragment {
             itemPosition = savedInstanceState.getInt("itemPosition");
             moviePosition = savedInstanceState.getInt("moviePosition");
         }
-
 
 
     }
@@ -99,6 +102,8 @@ public class MainActivityFragment extends Fragment {
         } else if (filter.equals("favorites")) {
             mActionBar.setTitle("Favorites Movies");
         }
+
+
     }
 
     @Override

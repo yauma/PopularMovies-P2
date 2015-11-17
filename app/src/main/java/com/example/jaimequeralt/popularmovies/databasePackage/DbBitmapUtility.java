@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream;
 /**
  * Created by jaimequeralt on 11/2/15.
  */
+
+//Based on a stackoverflow snippet
 public class DbBitmapUtility {
 
     // convert from bitmap to byte array
