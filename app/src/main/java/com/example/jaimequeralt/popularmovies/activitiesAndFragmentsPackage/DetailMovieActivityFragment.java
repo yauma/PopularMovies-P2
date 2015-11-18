@@ -73,6 +73,7 @@ public class DetailMovieActivityFragment extends Fragment {
     private MainActivityFragment.OnFragmentInteractionListenerMain mlistenerTwoPane;
     private Uri videoUrl;
     private ShareActionProvider mShareActionProvider;
+    private MenuItem item;
 
 
     public DetailMovieActivityFragment() {
@@ -90,7 +91,6 @@ public class DetailMovieActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //if movie null movie is pass via intent because TwoPane is false
-
         if (getArguments() != null) {
             movie = getArguments().getParcelable(ARG_PARAM1);
 
@@ -106,20 +106,23 @@ public class DetailMovieActivityFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        // Inflate menu resource file.
-        inflater.inflate(R.menu.menu_detail_movie, menu);
 
-        // Locate MenuItem with ShareActionProvider
-        MenuItem item = menu.findItem(R.id.action_share);
+        if (menu.size() == 0) {
+            // Inflate menu resource file.
+            inflater.inflate(R.menu.menu_detail_movie, menu);
 
-        // Fetch and store ShareActionProvider
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+            // Locate MenuItem with ShareActionProvider
+            item = menu.findItem(R.id.action_share);
 
+            // Fetch and store ShareActionProvider
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        }
 
     }
 

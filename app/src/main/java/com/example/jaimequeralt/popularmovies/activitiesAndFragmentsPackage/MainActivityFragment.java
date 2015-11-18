@@ -146,10 +146,7 @@ public class MainActivityFragment extends Fragment {
             if (filter != "favorites") {
 
                 loadGridViewFromDb();
-                filter = "favorites";
-                mActionBar.setTitle("Favorites Movies");
-                itemPosition = 0;
-                moviePosition = 0;
+
             }
 
 
@@ -245,6 +242,12 @@ public class MainActivityFragment extends Fragment {
             imageAdapter = new ImageAdapter(getActivity(), listMovies);
             gridview.setAdapter(imageAdapter);
             gridview.setSelection(itemPosition);
+            filter = "favorites";
+            if(mActionBar != null){
+                mActionBar.setTitle("Favorites Movies");
+            }
+            itemPosition = 0;
+            moviePosition = 0;
             if (MainActivity.mTwoPane) {
                 mListener.refreshDetailFragment(listMovies.get(moviePosition));
             }
