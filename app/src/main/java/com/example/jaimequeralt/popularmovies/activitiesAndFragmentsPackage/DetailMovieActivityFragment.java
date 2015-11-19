@@ -177,7 +177,7 @@ public class DetailMovieActivityFragment extends Fragment {
 
         url = "http://image.tmdb.org/t/p/w342/" + movie.getPoster_path();
 
-        if (movie.getImageByteArray() != null) {
+        if (movie.getImageByteArray() != null && movie.getImageByteArray().length != 0) {
             Bitmap bitmap = DbBitmapUtility.getImage(movie.getImageByteArray());
             Drawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
             imageViewPoster.setImageDrawable(drawable);

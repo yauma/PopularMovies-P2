@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/linearlayout_margin_top"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="100">
 
                 <FrameLayout
@@ -68,7 +68,6 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textStyle="bold"
-                        android:layout_gravity="left"
                         android:text="2015-06-19" />
 
                     <RatingBar
@@ -76,7 +75,6 @@
                         style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
                         android:isIndicator="true"
                         android:numStars="0"
                         android:stepSize="0.01" />
@@ -85,7 +83,7 @@
                         android:id="@+id/textViewRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center_horizontal"
                         android:text="7/10"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -94,7 +92,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/ic_action_emo_wink"
-                        android:layout_gravity="center_vertical|bottom"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp" />
 
                 </LinearLayout>
