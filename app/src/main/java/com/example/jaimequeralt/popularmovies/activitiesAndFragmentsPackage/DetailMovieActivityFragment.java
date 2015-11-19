@@ -113,7 +113,7 @@ public class DetailMovieActivityFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        if (menu.size() == 0) {
+        if (menu.size() == 0 || MainActivity.mTwoPane == true) {
             // Inflate menu resource file.
             inflater.inflate(R.menu.menu_detail_movie, menu);
 

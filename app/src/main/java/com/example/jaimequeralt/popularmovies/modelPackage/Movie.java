@@ -98,6 +98,11 @@ public class Movie implements Parcelable {
         parcel.writeString(overview);
         parcel.writeString(releaseDate);
         parcel.writeFloat(rating);
+        if(imageByteArray != null){
+            parcel.writeInt(imageByteArray.length);
+            parcel.writeByteArray(imageByteArray);
+        }
+
     }
 
     private void readFromParcel(Parcel in) {
@@ -107,6 +112,8 @@ public class Movie implements Parcelable {
         overview = in.readString();
         releaseDate = in.readString();
         rating = in.readFloat();
+        this.imageByteArray = new byte[in.readInt()];
+        in.readByteArray(this.imageByteArray);
     }
 
     public static final Parcelable.Creator CREATOR =
