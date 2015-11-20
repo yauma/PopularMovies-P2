@@ -89,7 +89,7 @@ public class DetailMovieActivity extends ActionBarActivity implements ReviewList
 // and add the transaction to the back stack
         frameLayoutDetail.setVisibility(View.INVISIBLE);
         frameLayoutReviews.setVisibility(View.VISIBLE);
-        transaction.add(R.id.reviews, reviewListFragment);
+        transaction.replace(R.id.reviews, reviewListFragment);
         transaction.addToBackStack(null);
 // Commit the transaction
         transaction.commit();
